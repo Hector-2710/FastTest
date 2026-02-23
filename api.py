@@ -1,4 +1,5 @@
-from fastapi import FastAPI,status, HTTPException
+from fastapi import FastAPI, status
+from uuid import UUID
 
 app = FastAPI()
 
@@ -6,9 +7,10 @@ app = FastAPI()
 def get_hello():
     return {"Hello": "World"}
 
+@app.get("/post/{id}", status_code=status.HTTP_200_OK)
+def get_post_by_id(id: int):
+    return {"id": id}
 
-@app.post("/post", status_code=status.HTTP_201_CREATED)
-def create_user(user: dict):
-        if "name" not in user:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Name is required")
-        return {"user": user}
+@app.get("/post", status_code=status.HTTP_200_OK)
+def get_post(id: UUID):
+    return {"id": id}
