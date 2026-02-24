@@ -1,7 +1,7 @@
 import json
 
 @staticmethod
-def print_report(result, url, status, body, error_msg=None):
+def print_report(result: str, url: str, status: int, body: str, error_msg: str = None):
         color = "\033[92m" if result == "PASSED" else "\033[91m"
         reset = "\033[0m"
         bold = "\033[1m"
@@ -16,13 +16,11 @@ def print_report(result, url, status, body, error_msg=None):
             print(f"{bold}Error:{reset}  {error_msg}")
         
         print(f"{bold}Body:{reset}")
-        # Pretty Print JSON
         try:
             if isinstance(body, (dict, list)):
                 content = json.dumps(body, indent=4, ensure_ascii=False)
                 print(content)
             else:
-                # Si es texto, tratamos de ver si es un string que parece JSON
                 try:
                     loaded = json.loads(body)
                     print(json.dumps(loaded, indent=4, ensure_ascii=False))
