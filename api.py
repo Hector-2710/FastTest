@@ -8,7 +8,7 @@ def get_hello():
     return {"Hello": "World"}
 
 @app.get("/post/{id}", status_code=status.HTTP_200_OK)
-def get_post_by_id(id: int):
+def get_post_by_id(id: UUID):
     return {"id": id}
 
 @app.get("/post", status_code=status.HTTP_200_OK)

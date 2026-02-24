@@ -1,12 +1,15 @@
-from library import FastTest, FastData
-from performance_tester import FastTestPerformance
+from FastTest import FastTest
+from FastData import FastData
 
 fastTest = FastTest("http://localhost:8000")
 
-#test status
-fastTest.get("/", 200)
-fastTest.post("/post", {"username": FastData.generate_name()}, 400)
+print("test 1")
+fastTest.get("/", expected_status=200, response_data={"Hello": "World"})
 
-#test performance
-performance_tester = FastTestPerformance("http://localhost:8000")
-performance_tester.run_performance_test(users=20, spawn_rate=5, run_time="1m", endpoints=["/", "/post"])
+print("test 2")
+id = FastData.generate_id()
+fastTest.get(f"/post/{id}", expected_status=200, response_data={"id": id})
+
+print("test 3")
+id = FastData.generate_id()
+fastTest.get("/post", expected_status=200, params={"id": id}, response_data={"id": id})
