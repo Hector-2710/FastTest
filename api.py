@@ -22,3 +22,24 @@ def create_user(user: dict):
     list_users.append(user)
     return user
 
+@app.put("/user/{username}", status_code=status.HTTP_200_OK)
+def update_user(username: str, data: dict):
+    for user in list_users:
+        if user["username"] == username:
+            user.update(data)
+            return user
+    return {"error": "User not found"}
+
+@app.patch("/user/{username}", status_code=status.HTTP_200_OK)
+def patch_user(username: str, data: dict):
+    for user in list_users:
+        if user["username"] == username:
+            user.update(data)
+            return user
+    return {"error": "User not found"}
+
+@app.delete("/user/{username}", status_code=status.HTTP_200_OK)
+def delete_user(username: str):
+    global list_users
+    list_users = [u for u in list_users if u["username"] != username]
+    return {"message": f"User {username} deleted"}
