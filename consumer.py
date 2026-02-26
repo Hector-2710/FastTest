@@ -1,5 +1,5 @@
-from FastTest import FastTest
-from FastData import FastData
+from rapidtest.RapidTest import FastTest
+from rapidtest.RapidData import FastData
 
 fastTest = FastTest("http://localhost:8000")
 

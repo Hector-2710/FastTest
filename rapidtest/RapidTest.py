@@ -1,5 +1,5 @@
 import requests
-from utils import print_report
+from rapidtest.Utils import print_report
 
 
 class FastTest:

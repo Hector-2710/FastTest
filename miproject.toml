@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rapidtest"
+version = "0.1.0"
+authors = [
+  { name="Hector Rosales", email="h.rosales01@ufromail.cl" },
+]
+description = "A simple testing framework for FastAPI"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "requests>=2.25.1",
+    "faker>=13.0.0",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/hector-dev/rapidtest"
+"Bug Tracker" = "https://github.com/hector-dev/rapidtest/issues"
+
+[tool.setuptools]
+packages = ["rapidtest"]
