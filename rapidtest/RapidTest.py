@@ -1,5 +1,5 @@
 import requests
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Annotated
 from rapidtest.Utils import print_report
 
 
@@ -11,7 +11,8 @@ class Test:
     el código de estado y el cuerpo de la respuesta.
     """
 
-    def __init__(self, url: str):
+    def __init__(self, *,
+        url: Annotated[str, "La URL base de la API (ej: 'http://localhost:8000')"]):
         """
         Inicializa el cliente de pruebas.
 
@@ -22,9 +23,9 @@ class Test:
 
     def _request(
         self, 
-        method: str, 
-        endpoint: str, 
-        expected_status: int = 200, 
+        method: Annotated[str, "Método HTTP (GET, POST, etc.)"], 
+        endpoint: Annotated[str, "Ruta del endpoint (ej: '/users')"], 
+        expected_status: Annotated[int, "Código de estado HTTP esperado"] = 200, 
         expected_body: Optional[Dict[str, Any]] = None, 
         **kwargs
     ) -> Optional[requests.Response]:
