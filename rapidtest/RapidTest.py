@@ -1,5 +1,5 @@
 import requests
-from typing import Optional, Dict, Any, Annotated
+from typing import Optional, Dict, Any, Annotated, Union, List
 from rapidtest.Utils import print_report
 
 
@@ -26,7 +26,11 @@ class Test:
         method: Annotated[str, "Método HTTP (GET, POST, etc.)"], 
         endpoint: Annotated[str, "Ruta del endpoint (ej: '/users')"], 
         expected_status: Annotated[int, "Código de estado HTTP esperado"] = 200, 
-        expected_body: Optional[Dict[str, Any]] = None, 
+        expected_body: Optional[Dict[str, Any]] = None,
+        json: Optional[Union[Dict[str, Any], list, str, int, float, bool]] = None,
+        data: Optional[Union[str, bytes, Dict[str, Any]]] = None,
+        params: Optional[Dict[str, Any]] = None,
+        headers: Optional[Dict[str, str]] = None,
         **kwargs
     ) -> Optional[requests.Response]:
         """
@@ -37,7 +41,11 @@ class Test:
             endpoint (str): Ruta del endpoint (ej: '/users').
             expected_status (int): Código de estado HTTP esperado.
             expected_body (dict, optional): Cuerpo JSON esperado en la respuesta.
-            **kwargs: Argumentos adicionales para requests (headers, json, params, etc.).
+            json (dict/list/str/int/float/bool, optional): Datos JSON a enviar en el cuerpo de la petición.
+            data (str/bytes/dict, optional): Datos del cuerpo de la petición.
+            params (dict, optional): Parámetros de consulta para la URL.
+            headers (dict, optional): Cabeceras HTTP adicionales.
+            **kwargs: Argumentos adicionales para requests (timeout, cookies, etc.).
 
         Returns:
             requests.Response: El objeto de respuesta si la conexión fue exitosa.
@@ -46,8 +54,20 @@ class Test:
         url = f"{self.url}/{endpoint.lstrip('/')}"
         method_func = getattr(requests, method.lower())
         
+        request_kwargs = {}
+        if json is not None:
+            request_kwargs['json'] = json
+        if data is not None:
+            request_kwargs['data'] = data
+        if params is not None:
+            request_kwargs['params'] = params
+        if headers is not None:
+            request_kwargs['headers'] = headers
+        
+        request_kwargs.update(kwargs)
+        
         try:
-            response = method_func(url, **kwargs)
+            response = method_func(url, **request_kwargs)
             status_ok = response.status_code == expected_status
             body_ok = True
             error_msg = None
@@ -80,25 +100,68 @@ class Test:
             print(f"\n❌ CRITICAL ERROR connecting to {url}: {str(e)}")
             return None
 
-    def get(self, endpoint: str, expected_status: int = 200, expected_body: Optional[Dict[str, Any]] = None, **kwargs) -> Optional[requests.Response]:
+    def get(self, *, 
+            endpoint: str, 
+            expected_status: int = 200, 
+            expected_body: Optional[Dict[str, Any]] = None,
+            params: Optional[Dict[str, Any]] = None,
+            headers: Optional[Dict[str, str]] = None,
+            **kwargs) -> Optional[requests.Response]:
         """Realiza una petición GET y valida el resultado."""
-        return self._request("GET", endpoint, expected_status, expected_body, **kwargs)
+        return self._request("GET", endpoint, expected_status, expected_body, 
+                           params=params, headers=headers, **kwargs)
 
-    def post(self, endpoint: str, expected_status: int = 200, expected_body: Optional[Dict[str, Any]] = None, **kwargs) -> Optional[requests.Response]:
+    def post(self, *, 
+             endpoint: str, 
+             expected_status: int = 201, 
+             expected_body: Optional[Dict[str, Any]] = None,
+             json: Optional[Union[Dict[str, Any], list, str, int, float, bool]] = None,
+             data: Optional[Union[str, bytes, Dict[str, Any]]] = None,
+             params: Optional[Dict[str, Any]] = None,
+             headers: Optional[Dict[str, str]] = None,
+             **kwargs) -> Optional[requests.Response]:
         """Realiza una petición POST y valida el resultado."""
-        return self._request("POST", endpoint, expected_status, expected_body, **kwargs)
+        return self._request("POST", endpoint, expected_status, expected_body, 
+                           json=json, data=data, params=params, headers=headers, **kwargs)
 
-    def put(self, endpoint: str, expected_status: int = 200, expected_body: Optional[Dict[str, Any]] = None, **kwargs) -> Optional[requests.Response]:
+    def put(self, *, 
+            endpoint: str, 
+            expected_status: int = 200, 
+            expected_body: Optional[Dict[str, Any]] = None,
+            json: Optional[Union[Dict[str, Any], list, str, int, float, bool]] = None,
+            data: Optional[Union[str, bytes, Dict[str, Any]]] = None,
+            params: Optional[Dict[str, Any]] = None,
+            headers: Optional[Dict[str, str]] = None,
+            **kwargs) -> Optional[requests.Response]:
         """Realiza una petición PUT y valida el resultado."""
-        return self._request("PUT", endpoint, expected_status, expected_body, **kwargs)
+        return self._request("PUT", endpoint, expected_status, expected_body, 
+                           json=json, data=data, params=params, headers=headers, **kwargs)
 
-    def patch(self, endpoint: str, expected_status: int = 200, expected_body: Optional[Dict[str, Any]] = None, **kwargs) -> Optional[requests.Response]:
+    def patch(self, *, 
+              endpoint: str, 
+              expected_status: int = 200, 
+              expected_body: Optional[Dict[str, Any]] = None,
+              json: Optional[Union[Dict[str, Any], list, str, int, float, bool]] = None,
+              data: Optional[Union[str, bytes, Dict[str, Any]]] = None,
+              params: Optional[Dict[str, Any]] = None,
+              headers: Optional[Dict[str, str]] = None,
+              **kwargs) -> Optional[requests.Response]:
         """Realiza una petición PATCH y valida el resultado."""
-        return self._request("PATCH", endpoint, expected_status, expected_body, **kwargs)
+        return self._request("PATCH", endpoint, expected_status, expected_body, 
+                           json=json, data=data, params=params, headers=headers, **kwargs)
 
-    def delete(self, endpoint: str, expected_status: int = 200, expected_body: Optional[Dict[str, Any]] = None, **kwargs) -> Optional[requests.Response]:
+    def delete(self, *, 
+               endpoint: str, 
+               expected_status: int = 204, 
+               expected_body: Optional[Dict[str, Any]] = None,
+               json: Optional[Union[Dict[str, Any], list, str, int, float, bool]] = None,
+               data: Optional[Union[str, bytes, Dict[str, Any]]] = None,
+               params: Optional[Dict[str, Any]] = None,
+               headers: Optional[Dict[str, str]] = None,
+               **kwargs) -> Optional[requests.Response]:
         """Realiza una petición DELETE y valida el resultado."""
-        return self._request("DELETE", endpoint, expected_status, expected_body, **kwargs)
+        return self._request("DELETE", endpoint, expected_status, expected_body, 
+                           json=json, data=data, params=params, headers=headers, **kwargs)
 
 
     
