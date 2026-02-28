@@ -1,6 +1,6 @@
 import requests
-from typing import Optional, Dict, Any, Annotated, Union, List
-from rapidtest.Utils import print_report
+from typing import Optional, Dict, Any, Annotated, Union
+from rapidtest.Utils import print_report, show_connection_error
 
 
 class Test:
@@ -97,7 +97,7 @@ class Test:
             return response
             
         except Exception as e:
-            print(f"\n❌ CRITICAL ERROR connecting to {url}: {str(e)}")
+            show_connection_error(url, e)
             return None
 
     def get(self, *, 
