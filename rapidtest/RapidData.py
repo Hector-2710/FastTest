@@ -5,94 +5,94 @@ fake = Faker()
 
 class Data:
     """
-    Proveedor de datos ficticios para pruebas.
+    Fake data provider for testing.
     
-    Esta clase utiliza la librería Faker para generar información realista 
-    como nombres, correos, direcciones, etc.
+    This class uses the Faker library to generate realistic information 
+    like names, emails, addresses, etc.
     """
 
     @staticmethod
     def generate_auth_user() -> Dict[str, str]:
-        """Genera un diccionario con username y password aleatorios."""
+        """Generates a dictionary with random username and password."""
         user = {"username": fake.user_name(), "password": fake.password()}
         return user   
 
     @staticmethod
     def generate_name() -> str:
-        """Genera un nombre completo aleatorio."""
+        """Generates a random full name."""
         return fake.name()
 
     @staticmethod
     def generate_id() -> str:
-        """Genera un UUID único."""
+        """Generates a unique UUID."""
         return fake.uuid4()
 
     @staticmethod
     def generate_email() -> str:
-        """Genera un correo electrónico aleatorio."""
+        """Generates a random email address."""
         return fake.email()
 
     @staticmethod
     def generate_password() -> str:
-        """Genera una contraseña segura aleatoria."""
+        """Generates a secure random password."""
         return fake.password()
 
     @staticmethod
     def generate_phone() -> str:
-        """Genera un número de teléfono aleatorio."""
+        """Generates a random phone number."""
         return fake.phone_number()
 
     @staticmethod
     def generate_address() -> str:
-        """Genera una dirección postal aleatoria."""
+        """Generates a random postal address."""
         return fake.address()
 
     @staticmethod
     def generate_city() -> str:
-        """Genera el nombre de una ciudad aleatoria."""
+        """Generates a random city name."""
         return fake.city()
 
     @staticmethod
     def generate_state() -> str:
-        """Genera el nombre de un estado/provincia aleatorio."""
+        """Generates a random state/province name."""
         return fake.state()
 
     @staticmethod
     def generate_zipcode() -> str:
-        """Genera un código postal aleatorio."""
+        """Generates a random postal code."""
         return fake.zipcode()
 
     @staticmethod
     def generate_country() -> str:
-        """Genera el nombre de un país aleatorio."""
+        """Generates a random country name."""
         return fake.country()
 
     @staticmethod
     def generate_job() -> str:
-        """Genera un título de trabajo aleatorio."""
+        """Generates a random job title."""
         return fake.job()
 
     @staticmethod
     def generate_text() -> str:
-        """Genera un texto aleatorio (párrafo corto)."""
+        """Generates random text (short paragraph)."""
         return fake.text()
 
     @staticmethod
     def generate_paragraph() -> str:
-        """Genera un párrafo largo aleatorio."""
+        """Generates a long random paragraph."""
         return fake.paragraph()
 
     @staticmethod
     def generate_date() -> str:
-        """Genera una fecha aleatoria (ISO)."""
+        """Generates a random date (ISO format)."""
         return str(fake.date())
 
     @staticmethod
     def generate_datetime() -> str:
-        """Genera fecha y hora aleatoria (ISO)."""
+        """Generates random date and time (ISO format)."""
         return str(fake.date_time())
 
     @staticmethod
     def generate_time() -> str:
-        """Genera una hora aleatoria."""
+        """Generates a random time."""
         return str(fake.time())
