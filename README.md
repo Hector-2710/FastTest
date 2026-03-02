@@ -8,6 +8,7 @@ A lightweight and simple library to simplify REST API testing. Designed to be in
 - **Automatic Validation**: Automatically compare status codes and response bodies.
 - **Visual Reports**: Formatted console output with colors to identify failures quickly.
 - **Data Generator**: Integrated random data generator (using Faker) for dynamic testing.
+- **Performance Testing**: Simplified Locust integration for load and performance testing.
 
 ## 🛠️ Installation
 
@@ -116,6 +117,67 @@ tester.post(endpoint="/upload", data={"file": "content"})
 tester.get(endpoint="/secure", timeout=30, verify=False)
 ```
 
+## 🚀 Performance Testing
+
+Use the `Performance` class to run simple load tests on your APIs:
+
+```python
+from rapidtest import Performance
+
+# Initialize performance test
+perf = Performance(
+    base_url="http://localhost:8000",
+    users=10,       # Number of concurrent users
+    duration=30,    # Test duration in seconds  
+    timeout=10      # Request timeout
+)
+
+# Add endpoint to test
+perf.add_get_task(endpoint="/api/users")
+
+# Run the test (results shown in terminal)
+results = perf.run()
+
+# Check results
+print(f"Success rate: {results['success_rate']}%")
+print(f"Average response time: {results['avg_response_time']}ms")
+print(f"Requests per second: {results['requests_per_second']}")
+```
+
+### Simple Performance Testing Features
+
+- **No external dependencies**: Uses only `requests` and `threading`
+- **Real-time terminal output**: See results as they happen
+- **Basic load simulation**: Multiple concurrent users
+- **Essential metrics**: Response times, success rates, RPS
+- **Python 3.12 compatible**: No Locust/gevent issues
+
+### Performance Test Output
+
+```
+🚀 Starting simple performance test
+📍 URL: http://localhost:8000/api/users
+👥 Users: 10
+⏱️  Duration: 30s
+--------------------------------------------------
+
+============================================================
+📊 PERFORMANCE TEST RESULTS  
+============================================================
+🎯 Total Requests:      1245
+✅ Successful:          1245
+❌ Failed:              0
+📈 Success Rate:        100.0%
+⚡ Requests/sec:        41.5
+⏱️  Avg Response Time:   12.3ms
+🐌 Min Response Time:   8.1ms
+🐇 Max Response Time:   89.2ms
+👥 Concurrent Users:    10
+⏰ Test Duration:       30s
+============================================================
+🟢 Excellent performance!
+```
+
 ## 📊 Reports
 
 Each test generates a visual report in the console like this:
@@ -139,6 +201,7 @@ Body:
 - `rapidtest/`
   - `RapidTest.py`: Core library logic
   - `RapidData.py`: Random data generator
+  - `Performance.py`: Simple performance testing (no external deps)
   - `Utils.py`: Formatting and reporting utilities
   - `__init__.py`: Module configuration
 
@@ -148,16 +211,19 @@ Body:
 - `faker>=13.0.0`: For generating fake data
 - `rich>=13.7.0`: For console output formatting
 
+**No external dependencies for performance testing** - uses built-in `threading` module!
+
 ## 📋 Requirements
 
 - Python >=3.7
 
 ## 📖 Project Information
 
-- **Version**: 0.2.1
+- **Version**: 0.3.0
 - **Author**: Hector Rosales
 - **License**: MIT
 - **Homepage**: https://github.com/hector-dev/rapidtest
+
 
 ---
 Built to simplify developers' lives. Happy testing! 🛠️
