@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rapidtest"
-version = "0.2.1"
+version = "0.3.0"
 authors = [
   { name="Hector Rosales", email="h.rosales01@ufromail.cl" },
 ]
-description = "A simple testing framework for FastAPI"
+description = "A comprehensive testing framework for REST APIs with functional and performance testing capabilities"
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
