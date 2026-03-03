@@ -1,5 +1,4 @@
 from fastapi import FastAPI, status
-from uuid import UUID
 
 app = FastAPI()
 
