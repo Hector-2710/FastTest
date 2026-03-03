@@ -1,14 +1,15 @@
 # RapidTest 🚀
 
-A lightweight and simple library to simplify REST API testing. Designed to be intuitive, fast to implement, and with clear visual reports.
+A **super lightweight** and blazingly fast library to simplify REST API testing. Designed to be intuitive, fast to implement, and with clear colorized reports - **no heavy dependencies!**
 
 ## ✨ Features
 
 - **Simplicity**: Perform HTTP requests (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`) in a single line.
 - **Automatic Validation**: Automatically compare status codes and response bodies.
-- **Visual Reports**: Formatted console output with colors to identify failures quickly.
+- **Fast & Lightweight**: Minimal dependencies, maximum speed!
+- **Colorized Reports**: Clean console output with ANSI colors to identify failures quickly.
 - **Data Generator**: Integrated random data generator (using Faker) for dynamic testing.
-- **Performance Testing**: Simplified Locust integration for load and performance testing.
+- **Performance Testing**: Built-in load testing with threading - no external tools needed!
 
 ## 🛠️ Installation
 
@@ -21,7 +22,7 @@ pip install rapidtest
 Or install dependencies manually:
 
 ```bash
-pip install requests faker rich
+pip install requests faker
 ```
 
 ## 🚀 Quick Start
@@ -154,6 +155,10 @@ print(f"Requests per second: {results['requests_per_second']}")
 
 ### Performance Test Output
 
+See real results in action:
+
+![Performance Test Results](docs/images/performance_results.png)
+
 ```
 🚀 Starting simple performance test
 📍 URL: http://localhost:8000/api/users
@@ -180,21 +185,19 @@ print(f"Requests per second: {results['requests_per_second']}")
 
 ## 📊 Reports
 
-Each test generates a visual report in the console like this:
+See how your tests look with real colorized output:
 
-```text
-============================================================
- TEST PASSED 
-============================================================
-URL:    http://localhost:8000/user
-Status: 201
-Body:
-{
-    "username": "hector",
-    "password": "123"
-}
-============================================================
-```
+### ✅ Successful Test
+![Test Passed](docs/images/test_passed.png)
+
+### ❌ Failed Test
+![Test Failed](docs/images/test_failed.png)
+
+**Colors:**
+- ✅ Green for PASSED tests
+- ❌ Red for FAILED tests  
+- 🔵 Blue for labels and info
+- 🟡 Yellow for warnings
 
 ## 📁 Project Structure
 
@@ -209,9 +212,12 @@ Body:
 
 - `requests>=2.25.1`: For making HTTP requests
 - `faker>=13.0.0`: For generating fake data
-- `rich>=13.7.0`: For console output formatting
 
-**No external dependencies for performance testing** - uses built-in `threading` module!
+**That's it!** 🎉
+
+✨ **Ultra lightweight** - removed Rich dependency for maximum speed  
+🚀 **Fastest startup** - minimal imports, instant execution  
+🧵 **Built-in performance testing** - uses only standard library `threading`
 
 ## 📋 Requirements
 
@@ -226,4 +232,4 @@ Body:
 
 
 ---
-Built to simplify developers' lives. Happy testing! 🛠️
+⚡ **Built for speed and simplicity** - because testing should be fast and fun! 🛠️✨
