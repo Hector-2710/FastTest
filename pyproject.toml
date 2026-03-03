@@ -14,7 +14,6 @@ requires-python = ">=3.7"
 dependencies = [
     "requests>=2.25.1",
     "faker>=13.0.0",
-    "rich>=13.7.0",
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
