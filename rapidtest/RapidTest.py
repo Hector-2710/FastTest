@@ -1,31 +1,30 @@
 import requests
-from typing import Optional, Dict, Any, Annotated, Union, List
-from rapidtest.Utils import print_report
-
+from typing import Optional, Dict, Any, Annotated, Union
+from rapidtest.Utils import print_report, show_connection_error
 
 class Test:
     """
-    Clase principal para realizar pruebas de integración en APIs REST.
+    Main class for performing REST API integration tests.
     
-    Esta clase permite realizar peticiones HTTP y validar automáticamente 
-    el código de estado y el cuerpo de la respuesta.
+    This class allows making HTTP requests and automatically validating 
+    status codes and response bodies.
     """
 
     def __init__(self, *,
-        url: Annotated[str, "La URL base de la API (ej: 'http://localhost:8000')"]):
+        url: Annotated[str, "The base URL of the API (e.g., 'http://localhost:8000')"]):
         """
-        Inicializa el cliente de pruebas.
+        Initializes the test client.
 
         Args:
-            url (str): La URL base de la API (ej: 'http://localhost:8000').
+            url (str): The base URL of the API (e.g., 'http://localhost:8000').
         """
         self.url = url.rstrip('/')
 
     def _request(
         self, 
-        method: Annotated[str, "Método HTTP (GET, POST, etc.)"], 
-        endpoint: Annotated[str, "Ruta del endpoint (ej: '/users')"], 
-        expected_status: Annotated[int, "Código de estado HTTP esperado"] = 200, 
+        method: Annotated[str, "HTTP method (GET, POST, etc.)"], 
+        endpoint: Annotated[str, "Endpoint path (e.g., '/users')"], 
+        expected_status: Annotated[int, "Expected HTTP status code"] = 200, 
         expected_body: Optional[Dict[str, Any]] = None,
         json: Optional[Union[Dict[str, Any], list, str, int, float, bool]] = None,
         data: Optional[Union[str, bytes, Dict[str, Any]]] = None,
@@ -34,22 +33,22 @@ class Test:
         **kwargs
     ) -> Optional[requests.Response]:
         """
-        Método interno para realizar peticiones y validar resultados.
+        Internal method to make requests and validate results.
 
         Args:
-            method (str): Método HTTP (GET, POST, etc.).
-            endpoint (str): Ruta del endpoint (ej: '/users').
-            expected_status (int): Código de estado HTTP esperado.
-            expected_body (dict, optional): Cuerpo JSON esperado en la respuesta.
-            json (dict/list/str/int/float/bool, optional): Datos JSON a enviar en el cuerpo de la petición.
-            data (str/bytes/dict, optional): Datos del cuerpo de la petición.
-            params (dict, optional): Parámetros de consulta para la URL.
-            headers (dict, optional): Cabeceras HTTP adicionales.
-            **kwargs: Argumentos adicionales para requests (timeout, cookies, etc.).
+            method (str): HTTP method (GET, POST, etc.).
+            endpoint (str): Endpoint path (e.g., '/users').
+            expected_status (int): Expected HTTP status code.
+            expected_body (dict, optional): Expected JSON body in response.
+            json (dict/list/str/int/float/bool, optional): JSON data to send in request body.
+            data (str/bytes/dict, optional): Request body data.
+            params (dict, optional): Query parameters for the URL.
+            headers (dict, optional): Additional HTTP headers.
+            **kwargs: Additional arguments for requests (timeout, cookies, etc.).
 
         Returns:
-            requests.Response: El objeto de respuesta si la conexión fue exitosa.
-            None: Si ocurrió un error crítico de conexión.
+            requests.Response: The response object if connection was successful.
+            None: If a critical connection error occurred.
         """
         url = f"{self.url}/{endpoint.lstrip('/')}"
         method_func = getattr(requests, method.lower())
@@ -77,7 +76,8 @@ class Test:
                 response_json = response.json()
             except Exception:
                 response_json = {"raw_content": response.text}
-
+            
+        
             if expected_body is not None:
                 if response_json != expected_body:
                     body_ok = False
@@ -97,7 +97,7 @@ class Test:
             return response
             
         except Exception as e:
-            print(f"\n❌ CRITICAL ERROR connecting to {url}: {str(e)}")
+            show_connection_error(url, e)
             return None
 
     def get(self, *, 
@@ -107,7 +107,7 @@ class Test:
             params: Optional[Dict[str, Any]] = None,
             headers: Optional[Dict[str, str]] = None,
             **kwargs) -> Optional[requests.Response]:
-        """Realiza una petición GET y valida el resultado."""
+        """Performs a GET request and validates the result."""
         return self._request("GET", endpoint, expected_status, expected_body, 
                            params=params, headers=headers, **kwargs)
 
@@ -120,7 +120,7 @@ class Test:
              params: Optional[Dict[str, Any]] = None,
              headers: Optional[Dict[str, str]] = None,
              **kwargs) -> Optional[requests.Response]:
-        """Realiza una petición POST y valida el resultado."""
+        """Performs a POST request and validates the result."""
         return self._request("POST", endpoint, expected_status, expected_body, 
                            json=json, data=data, params=params, headers=headers, **kwargs)
 
@@ -133,7 +133,7 @@ class Test:
             params: Optional[Dict[str, Any]] = None,
             headers: Optional[Dict[str, str]] = None,
             **kwargs) -> Optional[requests.Response]:
-        """Realiza una petición PUT y valida el resultado."""
+        """Performs a PUT request and validates the result."""
         return self._request("PUT", endpoint, expected_status, expected_body, 
                            json=json, data=data, params=params, headers=headers, **kwargs)
 
@@ -146,7 +146,7 @@ class Test:
               params: Optional[Dict[str, Any]] = None,
               headers: Optional[Dict[str, str]] = None,
               **kwargs) -> Optional[requests.Response]:
-        """Realiza una petición PATCH y valida el resultado."""
+        """Performs a PATCH request and validates the result."""
         return self._request("PATCH", endpoint, expected_status, expected_body, 
                            json=json, data=data, params=params, headers=headers, **kwargs)
 
@@ -159,7 +159,7 @@ class Test:
                params: Optional[Dict[str, Any]] = None,
                headers: Optional[Dict[str, str]] = None,
                **kwargs) -> Optional[requests.Response]:
-        """Realiza una petición DELETE y valida el resultado."""
+        """Performs a DELETE request and validates the result."""
         return self._request("DELETE", endpoint, expected_status, expected_body, 
                            json=json, data=data, params=params, headers=headers, **kwargs)
 
